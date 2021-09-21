@@ -6,7 +6,6 @@
 package Interfaces;
 
 import clases.ListaTareas;
-import clases.Indices;
 import clases.Tarea;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -21,6 +20,7 @@ public class InterfazRegistro extends javax.swing.JFrame {
     InterfazBuscar buscar;
     String usuario;
     ListaTareas c1;
+    InterfazLista lista;
     
     public InterfazRegistro(String u1) {
         initComponents();
@@ -29,6 +29,8 @@ public class InterfazRegistro extends javax.swing.JFrame {
         txtUsuario.setBackground(new java.awt.Color(0, 0, 0, 1));
         txtUsuario.setText(u1);
         this.c1 = new ListaTareas();
+        this.lista = new InterfazLista(this.c1);
+        this.lista.setVisible(true);
     }
 
     private InterfazRegistro() {
@@ -55,12 +57,9 @@ public class InterfazRegistro extends javax.swing.JFrame {
         btnBorrar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         btnRegistrar = new javax.swing.JButton();
         txtUsuario = new javax.swing.JTextField();
         lblFondoA = new javax.swing.JLabel();
-        txtInformacion = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         lblFecha = new javax.swing.JLabel();
         lblMateria = new javax.swing.JLabel();
         lblHora = new javax.swing.JLabel();
@@ -74,7 +73,6 @@ public class InterfazRegistro extends javax.swing.JFrame {
         txtID = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         lblEliminar = new javax.swing.JLabel();
-        btnLimpiarLista = new javax.swing.JButton();
         txtDescripción = new javax.swing.JScrollPane();
         txtDescripcionTarea = new javax.swing.JTextArea();
         lblFondo = new javax.swing.JLabel();
@@ -153,10 +151,6 @@ public class InterfazRegistro extends javax.swing.JFrame {
         jLabel4.setText("Registro de información");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1, 25));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Lista de Tareas");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 0, 100, 30));
-
         btnRegistrar.setBackground(new java.awt.Color(255, 255, 255));
         btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Icon new.png"))); // NOI18N
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -175,12 +169,6 @@ public class InterfazRegistro extends javax.swing.JFrame {
         lblFondoA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/7.jpg"))); // NOI18N
         lblFondoA.setText("Bienvenido: ");
         getContentPane().add(lblFondoA, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 470));
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        txtInformacion.setViewportView(jTextArea1);
-
-        getContentPane().add(txtInformacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 30, 220, 390));
 
         lblFecha.setText("Fecha de entrega:");
         getContentPane().add(lblFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 130, -1, -1));
@@ -223,14 +211,6 @@ public class InterfazRegistro extends javax.swing.JFrame {
         lblEliminar.setText("Eliminar tarea:");
         getContentPane().add(lblEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, -1, -1));
 
-        btnLimpiarLista.setText("LIMPIAR LISTA");
-        btnLimpiarLista.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpiarListaActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnLimpiarLista, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 430, -1, -1));
-
         txtDescripcionTarea.setColumns(20);
         txtDescripcionTarea.setRows(5);
         txtDescripción.setViewportView(txtDescripcionTarea);
@@ -272,7 +252,7 @@ public class InterfazRegistro extends javax.swing.JFrame {
             Tarea tareaEncontrada = c1.obtener(tareaBorrar);
             if(tareaEncontrada != null) c1.eliminar(tareaEncontrada);
             else JOptionPane.showMessageDialog(null, "No se ha encontrado la tarea.", "Error de búsqueda", JOptionPane.ERROR_MESSAGE);
-            this.jTextArea1.setText(c1.toString()); 
+            this.lista.actualizarLista();
         }
     }//GEN-LAST:event_btnBorrarActionPerformed
 
@@ -292,20 +272,12 @@ public class InterfazRegistro extends javax.swing.JFrame {
         String horaEntrega = txtHora.getText();
         Tarea tareaNew = new Tarea(nombre, descripcion, fechaEnvio, fechaEntrega, horaEntrega);
         c1.agregarFinal(tareaNew);
-        this.jTextArea1.setText(c1.toString());
+        this.lista.actualizarLista();
     }//GEN-LAST:event_btnIngresarMateriaActionPerformed
 
     private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
         this.btnBorrarActionPerformed(evt);
     }//GEN-LAST:event_txtIDActionPerformed
-
-    private void btnLimpiarListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarListaActionPerformed
-        if(!this.c1.estaVacia()){
-            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro que quiere borrar toda la lista?\nEsta acción no se puede rehacer.", "Confirmación", JOptionPane.YES_NO_OPTION);
-            if(confirmacion == JOptionPane.YES_OPTION) this.c1.limpiar();
-            this.jTextArea1.setText(c1.toString());
-        }
-    }//GEN-LAST:event_btnLimpiarListaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -346,17 +318,14 @@ public class InterfazRegistro extends javax.swing.JFrame {
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnIngresarMateria;
-    private javax.swing.JButton btnLimpiarLista;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblBorrar;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblEliminar;
@@ -373,7 +342,6 @@ public class InterfazRegistro extends javax.swing.JFrame {
     private javax.swing.JTextField txtFechaEntrega;
     private javax.swing.JTextField txtHora;
     private javax.swing.JTextField txtID;
-    private javax.swing.JScrollPane txtInformacion;
     private javax.swing.JTextField txtMateria;
     private javax.swing.JTextField txtUsuario;
     private javax.swing.JTextField txtxFechaEnvio;
